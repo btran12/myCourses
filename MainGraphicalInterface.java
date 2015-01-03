@@ -322,7 +322,7 @@ public class MainGraphicalInterface {
 		lblProfessorsInformation.setBounds(40, 404, 155, 14);
 		mainPanel.add(lblProfessorsInformation);
 		
-		JLabel lblTextbookRequired = new JLabel("Textbook Required");
+		JLabel lblTextbookRequired = new JLabel("Textbook Information");
 		lblTextbookRequired.setForeground(new Color(255, 215, 0));
 		lblTextbookRequired.setFont(new Font("Arial", Font.BOLD, 13));
 		lblTextbookRequired.setBounds(284, 404, 142, 14);
@@ -1121,6 +1121,7 @@ public class MainGraphicalInterface {
 					profInfoDisplay.setText("");
 					bookInfoDisplay.setText("");
 					
+					//Welcome the user on the Menu bar
 					welcomeLbl.setText("Welcome: " + profile.getFullName());
 					break;
 				}
@@ -1229,26 +1230,32 @@ public class MainGraphicalInterface {
 		if (year != null){	//Check for year creation
 			if (semesterCount < 2){	//Limit the number of semesters to 2 only
 				while(semester.equals("")){ //Keep looping if the field is empty
+					
 					semester = JOptionPane.showInputDialog("Enter Semester Season and Year");
 					if (semester == null){
 						break;
 					}
+					
 				}
 				if (semester != null){	//If OK
-					int forward = 0;
+					
+					int forward;
 					//INITIAL SETUP
 					year.addSemester(new Semester(semester)); //Initialize Semester object;	
 					semesterCount++;
 					thisSemester = year.getLastSemester();		//Initialize thisSemester. 
 					semesterLabel.setText(semester);
+					
 					while (true){ //Enter Several Courses if preferred
 						addClass();
 						display();
 						forward = JOptionPane.showConfirmDialog(null, "Add another course?", "+Course", JOptionPane.YES_NO_OPTION);
-						if (forward == 1){	//If NO
+						
+						if (forward == JOptionPane.NO_OPTION){	//If NO
 							break;
 						}	
 					}
+					
 				}
 			}else{
 				JOptionPane.showMessageDialog(null, "The Maximum Number of Semesters Has Been Created", "Warning!!", JOptionPane.WARNING_MESSAGE);
@@ -1518,6 +1525,7 @@ public class MainGraphicalInterface {
 					for (int i = 0; i < profile.getYearSize(); i++){	//Loop to find the matching semester by its name
 						if (yearsBox.getSelectedItem() == profile.getYear(i).getYearTitle()){
 							year = profile.getYear(i);
+							semesterCount = year.getSemesterSize();	//Keep Track of the number of semesters
 							//Prompt to Load, or Create a semester
 							int choice = JOptionPane.showConfirmDialog(null, "Load a Semester?", "Load Semester Option", JOptionPane.YES_NO_OPTION);
 							
@@ -1643,7 +1651,7 @@ public class MainGraphicalInterface {
 			@SuppressWarnings("resource")
 			BufferedReader br = new BufferedReader(new FileReader ("Accounts.txt"));
 			String[] section;
-			semesterCount = 0;
+			
 			
 			while ((currentLine = br.readLine()) != null){ //While the text file is not empty
 				StringTokenizer st = new StringTokenizer(currentLine, ":");
@@ -1663,7 +1671,6 @@ public class MainGraphicalInterface {
 					break;
 				case "SEMESTER":
 					account.getLastProfile().getLastYear().addSemester(new Semester(value)); // Just add semester name
-					semesterCount++;
 					break;
 				case "CLASS":
 					account.getLastProfile().getLastYear().getLastSemester().addClass(new Courses(value)); //Just add course name
