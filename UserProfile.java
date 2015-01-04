@@ -67,6 +67,15 @@ public class UserProfile {
 	}
 	
 	/**
+	 * Locate and return the index of the specified year
+	 * @param year the name to locate the year from
+	 * @return the index, or location of that year within the arrYear array
+	 */
+	public int findYear(String year) {
+		return arrYear.indexOf(year);
+	}
+	
+	/**
 	 * Get the last year that was added to the array
 	 * @return the last element or year object within the array
 	 */
@@ -144,5 +153,5 @@ public class UserProfile {
 			it.next().saveYear(fileName);
 		}
 	}
-
+	
 }
