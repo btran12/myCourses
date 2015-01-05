@@ -13,13 +13,13 @@ import javax.swing.JOptionPane;
  */
 public class Account {
 
-	ArrayList<UserProfile> arrProfile = new ArrayList<UserProfile>();
+	private ArrayList<UserProfile> arrProfile;
 	
 	/**
 	 * Class constructor, used to instantiate the class object
 	 */
 	public Account() {
-		//Instantiate the object
+		arrProfile = new ArrayList<UserProfile>();
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class Account {
 	}
 	
 	/**
-	 * Save all the elements/accounts within the array to the location as specified by the fileName
+	 * Save a simple string to instantiate the object later when load
 	 * @param fileName the location of where to save the file
 	 */
 	public void saveAccounts(String fileName){
