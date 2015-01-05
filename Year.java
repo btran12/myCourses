@@ -2,6 +2,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -73,6 +74,21 @@ public class Year {
 	 */
 	public Semester getSemester(int i){
 		return arrSemester.get(i);
+	}
+	
+	/**
+	 * Locate a semester index based on it's name
+	 * @param semester the name of the semester to locate through the array
+	 * @return the index, or location of the semester within the arrSemester array
+	 */
+	public int findSemester(String semester) {
+		for (int i = 0; i < arrSemester.size(); i++){
+			//Compare the strings until matches 
+			if (semester.equals(arrSemester.get(i).getName())){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	/**
