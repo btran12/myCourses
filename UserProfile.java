@@ -72,7 +72,13 @@ public class UserProfile {
 	 * @return the index, or location of that year within the arrYear array
 	 */
 	public int findYear(String year) {
-		return arrYear.indexOf(year);
+		for (int i = 0; i < arrYear.size(); i++){
+			//Compare the strings to find the matching year
+			if (year.equals(arrYear.get(i).getYearTitle())){
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	/**
