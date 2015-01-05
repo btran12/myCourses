@@ -49,6 +49,21 @@ public class Semester {
 	}
 	
 	/**
+	 * Find a course index based on it's name
+	 * @param course the name of the course
+	 * @return the course location within the array
+	 */
+	public int findCourse(String course) {
+		for (int i = 0; i < arrClasses.size(); i++){
+			if (course.equals(arrClasses.get(i).getCourseName())){
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	/**
 	 * 
 	 * @return the number of courses within the array
 	 */
@@ -126,4 +141,6 @@ public class Semester {
 			it.next().saveClass(fileName);
 		}
 	}
+
+	
 }
