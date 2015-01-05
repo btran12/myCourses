@@ -55,6 +55,28 @@ public class Courses {
 	}
 	
 	/**
+	 * Remove an assignment as specified by the index
+	 * @param index an index used to locate an assignment within the array
+	 */
+	public void removeAssignment(int index) {
+		arrAssignments.remove(index);
+	}
+	
+	/**
+	 * Find the index of an assignment within the array based on it's name
+	 * @param assignment the assignment name to find
+	 * @return the index or location of the assignment within the array
+	 */
+	public int findAssignment(String assignment) {
+		for (int i = 0; i < arrAssignments.size(); i++){
+			if (assignment.equals(arrAssignments.get(i).getName())){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
 	 * Used to instantiate the professors information variables
 	 * @param _name	name of the professor
 	 * @param _subject subject that they teaches
@@ -343,18 +365,6 @@ public class Courses {
 		}
 		
 	}
-	
-	/**
-	 * Remove an assignment as specified by the index
-	 * @param index an index used to locate an assignment within the array
-	 */
-	public void removeAssignment(int index) {
-		arrAssignments.remove(index);
-	}
-
-	
-
-	
 	
 
 }
