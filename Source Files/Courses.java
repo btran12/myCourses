@@ -5,9 +5,9 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 /**
- * 
+ * This class collect information on each course
+ * Able to also create, remove, and find assignments within the array
  * @author Bao Tran
- *This class keep tracks of all the assignments created by the user
  */
 public class Courses {
 	
@@ -67,7 +67,7 @@ public class Courses {
 	 * @param assignment the assignment name to find
 	 * @return the index or location of the assignment within the array
 	 */
-	public int findAssignment(String assignment) {
+	public int findAssignmentIndex(String assignment) {
 		for (int i = 0; i < arrAssignments.size(); i++){
 			if (assignment.equals(arrAssignments.get(i).getName())){
 				return i;
@@ -95,29 +95,49 @@ public class Courses {
 	}
 	
 	/**
-	 * 
+	 * Get the name of the instructor
 	 * @return the name of the professor
 	 */
 	public String getProfName(){
 		return profName;
 	}
-
+	
+	/**
+	 * Get the subject of the class
+	 * @return the subject that the professor teaches
+	 */
 	public String getSubject() {
 		return subject;
 	}
-
+	
+	/**
+	 * Get the email of the instructor
+	 * @return instructor's email address
+	 */
 	public String getEmail() {
 		return email;
 	}
-
+	
+	/**
+	 * Get the phone number of the instructor
+	 * @return instructor's phone number
+	 */
 	public String getPhone() {
 		return phone;
 	}
-
+	
+	/**
+	 * Room of the instructor
+	 * @return instructor's office number
+	 */
 	public String getOffice() {
 		return office;
 	}
-
+	
+	/**
+	 * Instructor's available office hours
+	 * @return instructor's office hours
+	 */
 	public String getOfficeHours() {
 		return officeHours;
 	}
@@ -150,38 +170,74 @@ public class Courses {
 		edition = _edition;
 	}
 	
+	/**
+	 * Get the title of the book required for the class
+	 * @return the book's title
+	 */
 	public String getTitle() {
 		return title;
 	}
-
+	
+	/**
+	 * Get the author of the book
+	 * @return the book's author
+	 */
 	public String getAuthor() {
 		return author;
 	}
-
+	
+	/**
+	 * Get the date when the book was published
+	 * @return book's published date
+	 */
 	public String getDatePublished() {
 		return datePublished;
 	}
 
+	/**
+	 * Get the current edition of the book
+	 * @return book's edition
+	 */
 	public String getEdition() {
 		return edition;
 	}
-
+	
+	/**
+	 * Get the percentage that was assigned to exam assignments
+	 * @return the exam's percentage 
+	 */
 	public double getExamPercent() {
 		return examPercent;
 	}
 
+	/**
+	 * Get the percentage that was assigned to homework assignments
+	 * @return the homework's percentage
+	 */
 	public double getHomeworkPercent() {
 		return homeworkPercent;
 	}
-
+	
+	/**
+	 * Get the percentage that was assigned to in class assignments (Participation, Attendance)
+	 * @return the in class percentage
+	 */
 	public double getInClassPercent() {
 		return inClassPercent;
 	}
-
+	
+	/**
+	 * Get the percentage that was assigned to laboratory assignments if applicable
+	 * @return the lab's percentage
+	 */
 	public double getLabPercent() {
 		return labPercent;
 	}
-
+	
+	/**
+	 * Get the percentage that was assigned to projects 
+	 * @return the project's percentage
+	 */
 	public double getProjectPercent() {
 		return projectPercent;
 	}
@@ -346,7 +402,7 @@ public class Courses {
 	 */
 	public void saveClass(String fileName) {
 		try{
-			FileOutputStream fos = new FileOutputStream (fileName + ".txt",true);
+			FileOutputStream fos = new FileOutputStream (fileName , true);
 			OutputStreamWriter save = new OutputStreamWriter (fos);
 				save.write("CLASS:" + courseName + "\n"+
 							"PROF:" + profSaveFormat() + "\n" +

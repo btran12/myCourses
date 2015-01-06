@@ -7,9 +7,8 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ * Track registered UserProfiles
  * @author Bao Tran
- * Store user's accounts into an array
  */
 public class Account {
 
@@ -46,7 +45,7 @@ public class Account {
 	public UserProfile getProfile(int i){
 		return arrProfile.get(i);
 	}
-	
+
 	/**
 	 * Get the size of the array or how many accounts are there
 	 * @return the size of the array
@@ -62,7 +61,7 @@ public class Account {
 	public void saveAccounts(String fileName){
 		
 		try{
-			FileOutputStream fos = new FileOutputStream (fileName + ".txt",false);
+			FileOutputStream fos = new FileOutputStream (fileName ,false);
 			OutputStreamWriter save = new OutputStreamWriter (fos);
 				save.write("ACCOUNT:" + "myCourses Accounts" +"\n");
 				save.close();

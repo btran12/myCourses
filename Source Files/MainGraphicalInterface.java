@@ -364,7 +364,6 @@ public class MainGraphicalInterface {
 // 		>------------------ADD PROFILE BUTTON--------------------<
 		JButton addProfileButton = new JButton("Add Profile");
 		addProfileButton.addActionListener(new ActionListener() {
-			
 			public void actionPerformed(ActionEvent e) {
 				addProfileActions();
 			}
@@ -466,8 +465,12 @@ public class MainGraphicalInterface {
 			public void actionPerformed(ActionEvent arg0) {
 				if (year != null){
 					if (thisSemester != null){
-						for (int i = 0; i < thisSemester.coursesSize(); i++){	//When ever a selection occurs details display the selected class
-							if ((dropBox.getSelectedItem() == thisSemester.getCourse(i).getCourseName())){	//If any of the courses are selected display that course info
+						
+						//When ever a selection occurs details display the selected class
+						for (int i = 0; i < thisSemester.courseSize(); i++){	
+							
+							//Display the selected course
+							if ((String.valueOf(dropBox.getSelectedItem()).equals(thisSemester.getCourse(i).getCourseName()))){	
 								detailsDisplay(i);
 								break;
 							}else if (dropBox.getSelectedItem() == "N/A"){	//If "N/A" is selected, clear everything
@@ -1183,30 +1186,68 @@ public class MainGraphicalInterface {
 	 */
 	public void addProfileActions(){
 		
-		String userName, password, id, fullName;
+		boolean alreadyExists = true;
+		JTextField userNameTxtField = new JTextField(), passwordTxtField = new JTextField(),
+				fullNameTxtField = new JTextField(), idTxtField = new JTextField();
+		int promptMsg = 0;
 		
-		userName = JOptionPane.showInputDialog("Enter a Username");
-		if (userName != null){
-			while (true){
+		Object[] prompt = {
+			"Enter Username:", 	userNameTxtField,
+			"Enter Password:", passwordTxtField,
+			"Your Full Name:", fullNameTxtField,
+			"Your Student ID:", idTxtField,
+		};
+		
+		while (promptMsg != JOptionPane.CANCEL_OPTION){
+		
+			promptMsg = JOptionPane.showConfirmDialog(null,	prompt, "Profile Information", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (promptMsg == JOptionPane.OK_OPTION){
 				
-				password = JOptionPane.showInputDialog("Enter a Password");
-				
-				if (password != null && password.length() > 5){ //Implement complex password
-					id = JOptionPane.showInputDialog("Enter your student ID");
-					if (id != null){
-						fullName = JOptionPane.showInputDialog("Enter your full name");
-						if (fullName != null){
-							account.addUser(new UserProfile(userName, password, fullName, id));
-							save();
-							
-						}
+				//1. Check for matching userName
+				for (int i = 0; i < account.getSize(); i ++){
+					if (userNameTxtField.getText().equals(account.getProfile(i).getUsername())){
+						alreadyExists = true;
+					}else{
+						alreadyExists = false;
 					}
-					break;
-				}else{
+				}
+				
+				//2. If userName already exist and the username field is empty
+				//Then loop again
+				if (alreadyExists == true || userNameTxtField.getText().isEmpty()){
+					
+					//Prompt to let the user know and re-loop
+					JOptionPane.showMessageDialog(null, "The username already exists, or the field is empty!");
+					
+				//3. If the password is less than 5 character in length
+				//Then loop again
+				}else if (passwordTxtField.getText().length() < 5){
+					
+					//Prompt to let the user know and loop to enter another password
 					JOptionPane.showMessageDialog(null, "Please enter a password that is longer than 5 characters in length!");
+				
+				//4. Check if the name field is empty or contains invalid character
+				}else if (fullNameTxtField.getText().isEmpty() || !fullNameTxtField.getText().contains("[a-zA-Z]")){
+					
+					JOptionPane.showMessageDialog(null, "The name field is empty, or contains invalid characters!");
+				
+				//5. Check if the ID field is empty
+				}else if (idTxtField.getText().isEmpty()){
+					
+					JOptionPane.showMessageDialog(null, "The ID field is empty!");
+					
+				//6. If all of the above passes store those information 
+				//And get out of loop
+				}else{
+					
+					//Create a new account
+					account.addUser(new UserProfile(userNameTxtField.getText(), passwordTxtField.getText(), fullNameTxtField.getText(), idTxtField.getText()));
+					break;
 				}
 			}
 		}
+		
 	}
 	/**
 	 * Check for valid year title, it must match the format provided
@@ -1368,7 +1409,7 @@ public class MainGraphicalInterface {
 				if (dropBox.getSelectedItem() != "N/A"){ //Data check to see if a class is selected
 					
 					//Keep track of the selected course's index
-					int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+					int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 					
 					//go to the method to perform the rest of the operations
 					addAssignment(courseIndex);
@@ -1404,7 +1445,7 @@ public class MainGraphicalInterface {
 					editClassPanel.setVisible(true);
 
 					//Keep track of the selected course's index
-					int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+					int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 					
 					//Set the fields with the available information
 					courseNameField.setText(thisSemester.getCourse(courseIndex).getCourseName());
@@ -1450,7 +1491,7 @@ public class MainGraphicalInterface {
 				if (dropBox.getSelectedItem() != "N/A"){ //Data check to see if a class is selected
 					
 					//Locate the selected course's index
-					int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+					int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 					
 					for (int o = 0; o < thisSemester.getCourse(courseIndex).assignmentSize(); o++){
 						//Add all available assignments name into the combo box
@@ -1467,7 +1508,7 @@ public class MainGraphicalInterface {
 						mainPanel.setVisible(false);
 						
 						//Locate the assignment index based on it's name
-						assignIndex = thisSemester.getCourse(courseIndex).findAssignment(String.valueOf(assignmentsBox.getSelectedItem()));
+						assignIndex = thisSemester.getCourse(courseIndex).findAssignmentIndex(String.valueOf(assignmentsBox.getSelectedItem()));
 						
 						//Set the text fields with the previously saved assignment's information
 						assignField.setText(thisSemester.getCourse(courseIndex).getAssignment(assignIndex).getName());
@@ -1526,7 +1567,7 @@ public class MainGraphicalInterface {
 				if (confirm != JOptionPane.CANCEL_OPTION){	//If OK
 					
 					//Locate the semester's index by it's name
-					int semesterIndex = year.findSemester(String.valueOf(semesterBox.getSelectedItem()));
+					int semesterIndex = year.findSemesterIndex(String.valueOf(semesterBox.getSelectedItem()));
 					
 					//remove that chosen semester
 					year.removeSemester(semesterIndex); 
@@ -1564,7 +1605,7 @@ public class MainGraphicalInterface {
 				if (dropBox.getSelectedItem() != "N/A"){ //Data check to see if a class is selected
 					
 					//Locate the selected course Index
-					int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+					int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 					
 					//Prompt to confirm the removal
 					int confirm = JOptionPane.showConfirmDialog(null, "Remove Course: " + thisSemester.getCourse(courseIndex).getCourseName(), "Confirm", JOptionPane.YES_NO_OPTION);
@@ -1615,7 +1656,7 @@ public class MainGraphicalInterface {
 				if (dropBox.getSelectedItem() != "N/A"){ //Data check to see if a class is selected
 
 					//Keep track of the selected course's index
-					int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+					int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 					
 					for (int o = 0; o < thisSemester.getCourse(courseIndex).assignmentSize(); o++){
 						
@@ -1628,7 +1669,7 @@ public class MainGraphicalInterface {
 					
 					if (option == JOptionPane.OK_OPTION){
 						
-						int assignIndex = thisSemester.getCourse(courseIndex).findAssignment(String.valueOf(assignmentsBox.getSelectedItem()));
+						int assignIndex = thisSemester.getCourse(courseIndex).findAssignmentIndex(String.valueOf(assignmentsBox.getSelectedItem()));
 						
 						//Remove that chosen assignment based on it's index
 						thisSemester.getCourse(courseIndex).removeAssignment(assignIndex);	
@@ -1686,7 +1727,7 @@ public class MainGraphicalInterface {
 				if (yearChoice == JOptionPane.OK_OPTION){	
 					
 					//Locate the selected year's index by it's name
-					int yearIndex = account.getProfile(profileIndex).findYear(String.valueOf(yearsBox.getSelectedItem()));
+					int yearIndex = account.getProfile(profileIndex).findYearIndex(String.valueOf(yearsBox.getSelectedItem()));
 					
 					//Set the year object to the found year
 					year = account.getProfile(profileIndex).getYear(yearIndex);
@@ -1755,7 +1796,7 @@ public class MainGraphicalInterface {
 				if (semesterChoice == JOptionPane.OK_OPTION){	
 					
 					//Locate the semester's index based on the selected item from the combo box
-					int semesterIndex = year.findSemester(String.valueOf(semestersBox.getSelectedItem()));
+					int semesterIndex = year.findSemesterIndex(String.valueOf(semestersBox.getSelectedItem()));
 					
 					//Set the object to the found Semester object
 					thisSemester = year.getSemester(semesterIndex);
@@ -1766,7 +1807,7 @@ public class MainGraphicalInterface {
 					//Refresh the display
 					display();
 					
-					for (int i = 0; i < thisSemester.coursesSize(); i++){	
+					for (int i = 0; i < thisSemester.courseSize(); i++){	
 						//Add all the courses available in this semester to the comboBox
 						dropBox.addItem(thisSemester.getCourse(i).getCourseName());
 					}
@@ -1825,7 +1866,7 @@ public class MainGraphicalInterface {
 		if (account != null){
 			
 			//Access the saveAccounts method to save any information available within each class
-			account.saveAccounts("Accounts");
+			account.saveAccounts(fileName);
 			JOptionPane.showMessageDialog(null, "Saved Successfully!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 			
 		}else{
@@ -1834,12 +1875,11 @@ public class MainGraphicalInterface {
 	}
 	
 	/**
-	 * Load whatever is in the .txt file
+	 * Load whatever is in the Accounts.txt file
 	 * The reader looks for any matching tags and scan in it's values
 	 * A tag with more than 1 values are separated by a "|" 
 	 * Each sections are separated using the .split() function
 	 * Then those sections are passed into methods by it's index within the section's array
-	 * @param fileName the path of where the file is to be saved
 	 */
 	public void loadAccounts(){
 		try {
@@ -1911,7 +1951,7 @@ public class MainGraphicalInterface {
 		double total =  exam + hw + inClass + lab + project;
 
 		//Keep track of the selected course's index
-		int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+		int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 		
 		//Make sure that the percentages adds up to 100
 		//Or 1 in this case since divided by 100 up top
@@ -1930,6 +1970,12 @@ public class MainGraphicalInterface {
 			
 			//Re-save
 			save();
+			
+			//Re-add the edited item in the drop down to a new name
+			dropBox.removeItem(dropBox.getSelectedItem());
+			dropBox.addItem(courseNameField.getText());
+			
+			
 			
 			//Go Back to Previous screen
 			mainPanel.setVisible(true);
@@ -1953,19 +1999,15 @@ public class MainGraphicalInterface {
 		String type, name = "";
 
 		//Keep track of the selected course's index
-		int courseIndex = thisSemester.findCourse(String.valueOf(dropBox.getSelectedItem()));
+		int courseIndex = thisSemester.findCourseIndex(String.valueOf(dropBox.getSelectedItem()));
 		
+		//Limit the characters of the assignment's name to only 11 characters 
 		if (assignField.getText().length() > 11){
 			name = assignField.getText();
 			name = name.substring(0, 11);
 		}
-		//Set the updated information
-		thisSemester.getCourse(courseIndex).getAssignment(assignIndex).setName(name);
 		
-		thisSemester.getCourse(courseIndex).getAssignment(assignIndex).setDate(assignOnField.getText());
-		
-		thisSemester.getCourse(courseIndex).getAssignment(assignIndex).setDue(assignDueField.getText());
-		
+		//Check for a selection of the radio buttons
 		if (hwRadio.isSelected()){
 			type = hwRadio.getText();
 		}else if (examRadio.isSelected()){
@@ -1978,9 +2020,8 @@ public class MainGraphicalInterface {
 			type = labRadio.getText();
 		}
 		
-		thisSemester.getCourse(courseIndex).getAssignment(assignIndex).setType(type);
-		
-		thisSemester.getCourse(courseIndex).getAssignment(assignIndex).setGrade((Double) gradeSpin.getValue());
+		//Set the updated information
+		thisSemester.getCourse(courseIndex).getAssignment(assignIndex).setAssignmentInfo(name, assignOnField.getText(), assignDueField.getText(), type, (Double) gradeSpin.getValue());
 		
 		//Re-save
 		save();
@@ -2021,7 +2062,7 @@ public class MainGraphicalInterface {
 	public void display(){			
 		String show = "          " + "Course:" + "\t" + "Average:" + "\n";
 		if (thisSemester != null){
-			for (int i = 0; i < thisSemester.coursesSize(); i++){
+			for (int i = 0; i < thisSemester.courseSize(); i++){
 				show += "          " + thisSemester.getCourse(i).getCourseName() + "\t" + thisSemester.getCourse(i).getCourseGrade() + " " + thisSemester.getCourse(i).getLetterGrade() + "\n";
 			}
 			show += "\n-------------\n" 
@@ -2035,6 +2076,7 @@ public class MainGraphicalInterface {
 	 * Prompt the user for inputs to set the professor's info, textbook's info, and assignment's percentages
 	 */
 	public void addClass(){
+		//METHOD NEEDS REFACTORING
 		
 		String className = "", profName, subject, email, phone, office, hours;
 		String title = "", author = "", published = "", edition = "";	
@@ -2134,7 +2176,7 @@ public class MainGraphicalInterface {
 					//Prompt the user to enter the book's information
 					option = JOptionPane.showConfirmDialog(null, txtFields2, "Book's Information", JOptionPane.OK_CANCEL_OPTION);
 					
-					if (option != JOptionPane.CANCEL_OPTION){
+					if (option == JOptionPane.OK_OPTION){
 						
 						//Check for invalid characters
 						if (fields.get(0).getText().contains("|") || fields.get(1).getText().contains("|") || fields.get(2).getText().contains("|") || fields.get(3).getText().contains("|")){
@@ -2207,35 +2249,31 @@ public class MainGraphicalInterface {
 	 * @param index to locate a specific course to get the assignments of that course
 	 */
 	public void addAssignment(int index){
-		String name = "", date, due, type;
-		JTextField due1;
+		String name = "";
 		int option = 0;
-		double grade;
 		
-		JTextField date1 = new JTextField();
-		due1 = new JTextField();
-		JTextField grade1 = new JTextField();
-		JComboBox<String> type1 = new JComboBox<String>();
+		JTextField date = new JTextField(), due = new JTextField(), grade = new JTextField();
+		JComboBox<String> type = new JComboBox<String>();
 		
 		//To Ensure Only the percentages that the User have chosen 
 		//will show up in the combo box when adding an assignment
 		if (thisSemester.getCourse(index).homeworkPercent > 0){
-			type1.addItem("Homework");
+			type.addItem("Homework");
 		}if (thisSemester.getCourse(index).projectPercent > 0){
-			type1.addItem("Project");
+			type.addItem("Project");
 		}if (thisSemester.getCourse(index).labPercent > 0){
-			type1.addItem("Lab");
+			type.addItem("Lab");
 		}if (thisSemester.getCourse(index).examPercent > 0){
-			type1.addItem("Exam");
+			type.addItem("Exam");
 		}if (thisSemester.getCourse(index).inClassPercent> 0){
-			type1.addItem("In Class");
+			type.addItem("In Class");
 		}
 	
 		Object[] fields ={
-				"*Type:", type1,
-				"Date Assigned:", date1,
-				"Due On:", due1,
-				"*Grade Received:", grade1
+				"*Type:", type,
+				"Date Assigned:", date,
+				"Due On:", due,
+				"*Grade Received:", grade
 		};
 		
 		//Keep looping if the field is empty
@@ -2266,7 +2304,7 @@ public class MainGraphicalInterface {
 				if (option == JOptionPane.OK_OPTION){
 					
 					//If fields contains invalid characters or Grade is not a valid number 
-					if (date1.getText().contains("|") || due1.getText().contains("|") || grade1.getText().equals("") || Double.parseDouble(grade1.getText()) < 0 || grade1.getText().contains("[a-zA-Z]+") == true){
+					if (date.getText().contains("|") || due.getText().contains("|") || grade.getText().equals("") || Double.parseDouble(grade.getText()) < 0 || grade.getText().contains("[a-zA-Z]+") == true){
 						
 						//Let the user know, and re-loop
 						JOptionPane.showMessageDialog(null, "Grade is Not a Valid Number or Contains Invalid Character '|'");
@@ -2283,14 +2321,8 @@ public class MainGraphicalInterface {
 			//(2) Then this case
 			if (option == JOptionPane.OK_OPTION){
 				
-				//Get the inputed information and store them into these variables
-				date = date1.getText();
-				due = due1.getText();
-				type = (String) type1.getSelectedItem();
-				grade = Double.parseDouble(grade1.getText());
-				
 				//Create new assignment with those values
-				thisSemester.getCourse(index).addAssignment(new Assignments(name, date, due, type, grade));
+				thisSemester.getCourse(index).addAssignment(new Assignments(name, date.getText(), due.getText(), (String) type.getSelectedItem(), Double.parseDouble(grade.getText())));
 				
 				//Save that new assignment
 				save();

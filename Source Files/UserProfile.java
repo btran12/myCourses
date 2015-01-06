@@ -6,9 +6,9 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ * Retains information on individual accounts
+ * Keep track of the years available by adding, removing, and finding them
  * @author Bao Tran
- *Store the year classes, and initiate its functions
  */
 public class UserProfile {
 	private String username, password, id, fullname;
@@ -71,7 +71,7 @@ public class UserProfile {
 	 * @param year the name to locate the year from
 	 * @return the index, or location of that year within the arrYear array
 	 */
-	public int findYear(String year) {
+	public int findYearIndex(String year) {
 		for (int i = 0; i < arrYear.size(); i++){
 			//Compare the strings to find the matching year
 			if (year.equals(arrYear.get(i).getYearTitle())){
@@ -145,7 +145,7 @@ public class UserProfile {
 	public void saveProfile(String fileName){
 		
 		try{
-			FileOutputStream fos = new FileOutputStream (fileName + ".txt",true);
+			FileOutputStream fos = new FileOutputStream (fileName , true);
 			OutputStreamWriter save = new OutputStreamWriter (fos);
 				save.write("PROFILE:" +profileSaveFormat() +"\n");
 				save.close();

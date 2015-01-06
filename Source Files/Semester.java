@@ -5,10 +5,9 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 /**
- * 
+ * This class retains information for each semester
+ * Be able to create, remove, and find courses
  * @author Bao Tran
- *This class keep tracks of the courses that are in each semester
- *
  */
 public class Semester {
 	private String semesterTitle;
@@ -53,7 +52,7 @@ public class Semester {
 	 * @param course the name of the course
 	 * @return the course location within the array
 	 */
-	public int findCourse(String course) {
+	public int findCourseIndex(String course) {
 		for (int i = 0; i < arrClasses.size(); i++){
 			if (course.equals(arrClasses.get(i).getCourseName())){
 				return i;
@@ -67,7 +66,7 @@ public class Semester {
 	 * 
 	 * @return the number of courses within the array
 	 */
-	public int coursesSize(){
+	public int courseSize(){
 		return arrClasses.size();
 	}
 	
@@ -127,7 +126,7 @@ public class Semester {
 	public void saveSemester(String fileName){
 		
 		try{
-			FileOutputStream fos = new FileOutputStream (fileName + ".txt",true);	//Change to True once get the Year class working 
+			FileOutputStream fos = new FileOutputStream (fileName , true);	//Change to True once get the Year class working 
 			OutputStreamWriter save = new OutputStreamWriter (fos);
 				save.write("SEMESTER:" +semesterTitle +"\n");
 				save.close();

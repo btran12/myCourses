@@ -6,10 +6,9 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * This class retains information on each school year
+ * Be able to create, remove, and find semesters 
  * @author Bao Tran
- *This class is at the top of the hierarchy
- *It's purpose is to store multiple semesters and retrieve information from multiple semesters
  */
 public class Year {
 	private String schoolYear;
@@ -81,7 +80,7 @@ public class Year {
 	 * @param semester the name of the semester to locate through the array
 	 * @return the index, or location of the semester within the arrSemester array
 	 */
-	public int findSemester(String semester) {
+	public int findSemesterIndex(String semester) {
 		for (int i = 0; i < arrSemester.size(); i++){
 			//Compare the strings until matches 
 			if (semester.equals(arrSemester.get(i).getName())){
@@ -108,7 +107,7 @@ public class Year {
 	public void saveYear(String fileName){
 
 		try{
-			FileOutputStream fos = new FileOutputStream (fileName + ".txt",true);
+			FileOutputStream fos = new FileOutputStream (fileName , true);
 			OutputStreamWriter save = new OutputStreamWriter (fos);
 				save.write("YEAR:" +schoolYear +"\n");
 				save.close();

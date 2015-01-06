@@ -4,12 +4,11 @@ import java.io.OutputStreamWriter;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ * This class collect information on each assignment
  * @author Bao Tran
- *This class outline the details of each assignment
  */
 public class Assignments {
-	private String name, date, due, type;
+	private String name, date, dueDate, type;
 	private double grade;
 	
 	/**
@@ -31,7 +30,7 @@ public class Assignments {
 	public Assignments( String _name, String _date, String _due, String _type, double _grade){
 		name = _name;
 		date = _date;
-		due = _due;
+		dueDate = _due;
 		type = _type;
 		grade = _grade;
 		
@@ -66,37 +65,41 @@ public class Assignments {
 	 */
 	public String toString(){
 		String toString;
-		toString = name + "\t" + "[" + type +"]" +"\t" + date + "\t" + due + "\t" + grade;
+		toString = name + "\t" + "[" + type +"]" +"\t" + date + "\t" + dueDate + "\t" + grade;
 					
 		return toString;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	/**
+	 * Update the previous assignment's information with new information
+	 * @param _name name of the assignment
+	 * @param _date	the date on which the assignment was assigned
+	 * @param _dueDate the date on which the assignment is due
+	 * @param _type the type of assignment it is
+	 * @param _grade the grade you received for the assignment
+	 */
+	public void setAssignmentInfo(String _name, String _date, String _dueDate, String _type, double _grade){
+		name = _name;
+		date = _date;
+		dueDate = _dueDate;
+		type = _type;
+		grade = _grade;
 	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public void setDue(String due) {
-		this.due = due;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public void setGrade(double grade) {
-		this.grade = grade;
-	}
-
+	
+	/**
+	 * Get the date on which the assignment was assigned
+	 * @return that date on which the assignment was assigned on
+	 */
 	public String getDate() {
 		return date;
 	}
-
+	
+	/**
+	 * Get the date on which it is or was due
+	 * @return date on which the assignment is due
+	 */
 	public String getDue() {
-		return due;
+		return dueDate;
 	}
 
 	/**
@@ -104,7 +107,7 @@ public class Assignments {
 	 * @return a formatted string for saving
 	 */
 	private String saveAssignmentFormat(){
-		return name + "|" + date + "|" + due + "|" + type + "|" + grade; 
+		return name + "|" + date + "|" + dueDate + "|" + type + "|" + grade; 
 	}
 	
 	/**
@@ -113,7 +116,7 @@ public class Assignments {
 	 */
 	public void saveAssignment(String fileName) {
 		try{
-			FileOutputStream fos = new FileOutputStream (fileName +".txt",true);
+			FileOutputStream fos = new FileOutputStream (fileName , true);
 			OutputStreamWriter save = new OutputStreamWriter (fos);
 				save.write("HW:" + saveAssignmentFormat() + "\n");
 				save.close();
