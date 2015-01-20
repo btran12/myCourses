@@ -2,7 +2,7 @@ myCourses
 =========
 
 Java class project programmed in Eclipse.
-The classes are linked in a hierarchical structure: Account > UserProfile > Year > Courses > Assignments.
+The classes are linked in a hierarchical structure; not an extension of one another but each class calls upon another's array: Account > UserProfile > Year > Courses > Assignments.
 The mainGraphicalInterface contains the components to the GUI and its functions.
 User is able to:
 - Create many accounts
