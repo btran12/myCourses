@@ -1,0 +1,47 @@
+ACCOUNT:myCourses Accounts
+PROFILE:quybao|1234567|Bao Tran|A001
+YEAR:2014-2015
+SEMESTER:Fall 2015
+CLASS:CAIS 220
+PROF: | | | | | 
+TEXT: | | | 
+PERC:0.0|1.0|0.0|0.0|0.0
+HW:Homework 12|||Homework|100.0
+SEMESTER:Spring 2016
+CLASS:MATH 220
+PROF: | | | | | 
+TEXT: | | | 
+PERC:0.45|0.3|0.1|0.0|0.15
+HW:Exam 1|3/5/15||Exam|62.0
+HW:HW 1|||Homework|40.0
+HW:HW 2|||Homework|100.0
+HW:HW 3|||Homework|100.0
+HW:HW 4|||Homework|65.0
+HW:HW 5|||Homework|100.0
+HW:HW 6|||Homework|100.0
+HW:HW 7|||Homework|100.0
+HW:HW 8|||Homework|100.0
+HW:HW 9|||Homework|100.0
+HW:HW 10|||Homework|100.0
+HW:Exam 3|||Exam|75.0
+HW:HW 11|||Homework|100.0
+HW:HW 12|||Homework|100.0
+HW:Exam 2|||Exam|75.0
+PROFILE:hello|goodbye|greetings|121
+YEAR:2014-2015
+SEMESTER:Spring 2016
+CLASS:MATH
+PROF: | | | | | 
+TEXT: | | | 
+PERC:0.0|1.0|0.0|0.0|0.0
+HW:Homework 1|||Homework|96.0
+HW:Homework 2|||Homework|100.0
+PROFILE:test|testie|Ba|1234
+PROFILE:westfield|westfield|Owl|123
+YEAR:2014-2015
+SEMESTER:Fall 2014
+CLASS:MATH
+PROF: professor| subject| email| phone| office | hourse
+TEXT: Title| author| published| edition
+PERC:0.0|1.0|0.0|0.0|0.0
+HW:Homework 1|||Homework|100.0
