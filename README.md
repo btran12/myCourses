@@ -6,7 +6,7 @@ The classes are linked in a hierarchical structure; not an extension of one anot
 The mainGraphicalInterface contains the components to the GUI and its functions.
 User is able to:
 - Create many accounts
-- Create as many years as they would like, but each year will only has 2 semesters
+- Create as many years as they would like, each school year is only limited to two semesters
 - Remove semesters, courses, and assignments
 - Edit courses, and assignments
 - Change password for the current account
